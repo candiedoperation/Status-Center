@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "Status-Center",
+    "slug": "Status-Center",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "Status-Center"
+}
