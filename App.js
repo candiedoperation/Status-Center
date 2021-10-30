@@ -1,21 +1,17 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import { NativeBaseProvider } from 'native-base';
+import { Provider as PaperProvider } from 'react-native-paper';
+import ApplicationInterface from './appsource/components/ApplicationInterface';
+import { monitoringTheme } from './appsource/themes/blueberry';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NativeBaseProvider>
+      <PaperProvider theme={monitoringTheme}>
+        <ApplicationInterface></ApplicationInterface>
+      </PaperProvider>
+      <StatusBar style="inverted" backgroundColor="#002e99" translucent={false}></StatusBar>
+    </NativeBaseProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
