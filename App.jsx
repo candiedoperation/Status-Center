@@ -9,9 +9,9 @@ export default function App() {
   return (
     <NativeBaseProvider>
       <PaperProvider theme={monitoringTheme}>
-        <ApplicationInterface></ApplicationInterface>
+        <ApplicationInterface />
       </PaperProvider>
-      <StatusBar style="inverted" backgroundColor="#002e99" translucent={false}></StatusBar>
+      <StatusBar style="light" backgroundColor="#002e99" translucent={false} />
     </NativeBaseProvider>
   );
 }

@@ -1,9 +1,9 @@
 import { ScrollView } from 'native-base';
-import React, { useState, useCallback } from 'react';
-import { List, View, Text, Provider } from 'react-native-paper';
+import React, { useState } from 'react';
+import { List, Provider } from 'react-native-paper';
 import { monitoringTheme, statusColors } from '../themes/blueberry';
 import SystemAccordition from './SystemAccordition';
-import { addService, deleteStorageKey, fetchServices } from '../controllers/StorageController';
+import { fetchServices } from '../controllers/StorageController';
 
 const SystemStatusGroup = () => {
     const [renderUUID, requestReRender] = useState('');
@@ -19,7 +19,7 @@ const SystemStatusGroup = () => {
         }
 
         setDBServicesList(dbServicesList);
-        requestReRender("123");
+        requestReRender('123');
     });
 
     return (
