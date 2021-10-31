@@ -7,8 +7,9 @@ const AppBar = (props) => {
         <Appbar style={styles.appbar}>
             <Appbar.Action icon="menu" onPress={() => { props.navigation.toggleDrawer(); }} />
             <Appbar.Content title={props.route.name} />
-            <Appbar.Action icon="plus" onPress={() => {  }} />
-            <Appbar.Action icon="cog-outline" onPress={() => {  }} />
+            <Appbar.Action style={{ display: props.route.name == "System Status" ? "flex" : "none" }} icon="plus" onPress={() => {  }} />
+            <Appbar.Action style={{ display: props.route.name == "System Status" ? "flex" : "none" }} icon="refresh" onPress={() => {  }} />
+            <Appbar.Action style={{ display: props.route.name == "System Status" ? "flex" : "none" }} icon="cog-outline" onPress={() => {  }} />
         </Appbar>
     );
 };
