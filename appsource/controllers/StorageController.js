@@ -6,14 +6,14 @@ const initializeStorageKey = (keyIdentifier, callback) => {
   AsyncStorage.setItem(keyIdentifier, JSON.stringify({}), callback);
 };
 
-function addService(systemName, systemDesc, callback) {
+function addService(systemName, systemDesc, systemTelnet, callback) {
   AsyncStorage.getItem('services', (error, response) => {
     if (response == null) {
-      initializeStorageKey('services', () => { addService(systemName, systemDesc); });
+      initializeStorageKey('services', () => { addService(systemName, systemDesc, systemTelnet); });
     } else {
       AsyncStorage.getItem('services', (error, existingServices) => {
         existingServices = JSON.parse(existingServices);
-        existingServices[uuid.v4()] = { systemName, systemDesc };
+        existingServices[uuid.v4()] = { systemName, systemDesc, systemTelnet };
         AsyncStorage.setItem('services', JSON.stringify(existingServices), callback);
       });
     }
