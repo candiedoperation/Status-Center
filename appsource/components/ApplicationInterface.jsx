@@ -23,6 +23,9 @@ const ApplicationInterface = (props) => {
                         }}
                         onUserRefreshRequest={() => {
                             MainScreenReference.current.requestDataRefresh()
+                        }}
+                        onUserSettingsRequest={() => {
+                            MainScreenReference.current.requestShowSettingsDialog(true)
                         }} 
                     />, 
             }}>

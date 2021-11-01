@@ -4,10 +4,12 @@ import { monitoringTheme } from '../themes/blueberry';
 import AddMonitoredService from '../components/AddMonitoredService';
 import SystemStatusGroup from '../components/SystemStatusGroup';
 import { ScrollView } from 'native-base';
+import SettingsDialog from '../components/SettingsDialog';
 
 const MainScreen = forwardRef((props, ref) => {
   const AddServiceModalReference = useRef();
   const SystemStatusGroupReference = useRef();
+  const SettingsModalReference = useRef();
   const [snackBarVisible, setSnackBarVisible] = React.useState(false);
   const [snackBarText, setSnackBarText] = React.useState('');
 
@@ -17,6 +19,9 @@ const MainScreen = forwardRef((props, ref) => {
     },
     requestDataRefresh() {
       SystemStatusGroupReference.current.requestDataRefresh();
+    },
+    requestShowSettingsDialog(modalState) {
+      SettingsModalReference.current.requestModalVisibility(modalState);
     },
     requestServiceRemoval(serviceUUID) {
 
@@ -34,6 +39,7 @@ const MainScreen = forwardRef((props, ref) => {
         <SystemStatusGroup showsnackbar={showSnackBar} ref={SystemStatusGroupReference} />
       </ScrollView>
       <AddMonitoredService ref={AddServiceModalReference} refreshCall={() => { SystemStatusGroupReference.current.requestDataRefresh() }} />
+      <SettingsDialog ref={SettingsModalReference} />
       <Portal>
         <Snackbar visible={snackBarVisible} onDismiss={() => { setSnackBarVisible(false); }}>{snackBarText}</Snackbar>
       </Portal>

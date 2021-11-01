@@ -20,22 +20,31 @@ function addService(systemName, systemDesc, systemTelnet, callback) {
   });
 }
 
-function fetchServices (resolve) {
+function exportStorageData(resolve) {
+  AsyncStorage.getAllKeys(async (error, storageKeys) => {
+    AsyncStorage.multiGet(storageKeys, (error, storageData) => {
+      resolve(JSON.stringify(storageData));
+    });
+  });
+}
+
+function fetchServices(resolve) {
+  exportStorageData();
   AsyncStorage.getItem('@services', (error, servicesList) => {
-      if (servicesList == null) {
-        initializeStorageKey('@services', () => { });
-        resolve({});
-      } else {
-        console.log(JSON.parse(servicesList));
-        resolve(JSON.parse(servicesList));
-      }
-    })
+    if (servicesList == null) {
+      initializeStorageKey('@services', () => { });
+      resolve({});
+    } else {
+      console.log(JSON.parse(servicesList));
+      resolve(JSON.parse(servicesList));
+    }
+  })
 };
 
-function fetchService (serviceUUID, resolve) {
+function fetchService(serviceUUID, resolve) {
   AsyncStorage.getItem('@services', (error, servicesList) => {
     servicesList = JSON.parse(servicesList); //FETCH ACK was used to log used
-    resolve (servicesList[serviceUUID]);
+    resolve(servicesList[serviceUUID]);
   });
 }
 
@@ -47,5 +56,5 @@ async function deleteStorageKey(keyIdentifier) {
 }
 
 export {
-  addService, fetchServices, fetchService, deleteStorageKey, initializeStorageKey,
+  addService, fetchServices, fetchService, exportStorageData, deleteStorageKey, initializeStorageKey,
 };

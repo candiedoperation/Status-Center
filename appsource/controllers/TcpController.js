@@ -6,8 +6,7 @@ function checkServiceAvailability(serviceUUID, callback) {
         console.log(serviceInformation);
         const TcpConnection = TcpSocket.createConnection({
             host: serviceInformation.systemTelnet.split(":")[0],
-            port: serviceInformation.systemTelnet.split(":")[1],
-            localAddress: "10.0.2.16"
+            port: serviceInformation.systemTelnet.split(":")[1]
         }, () => {
             TcpConnection.destroy ();
         });
