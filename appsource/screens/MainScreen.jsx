@@ -39,7 +39,7 @@ const MainScreen = forwardRef((props, ref) => {
         <SystemStatusGroup showsnackbar={showSnackBar} ref={SystemStatusGroupReference} />
       </ScrollView>
       <AddMonitoredService ref={AddServiceModalReference} refreshCall={() => { SystemStatusGroupReference.current.requestDataRefresh() }} />
-      <SettingsDialog ref={SettingsModalReference} />
+      <SettingsDialog refreshCall={() => { SystemStatusGroupReference.current.requestDataRefresh() }} ref={SettingsModalReference} />
       <Portal>
         <Snackbar visible={snackBarVisible} onDismiss={() => { setSnackBarVisible(false); }}>{snackBarText}</Snackbar>
       </Portal>

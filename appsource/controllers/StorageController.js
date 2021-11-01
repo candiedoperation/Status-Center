@@ -28,8 +28,18 @@ function exportStorageData(resolve) {
   });
 }
 
+function importStorageData(storageData, reject, resolve) {
+  AsyncStorage.multiSet(storageData, (error) => {
+    if (!error) {
+      resolve();
+    } else {
+      console.log(error);
+      reject (error);
+    }
+  })
+}
+
 function fetchServices(resolve) {
-  exportStorageData();
   AsyncStorage.getItem('@services', (error, servicesList) => {
     if (servicesList == null) {
       initializeStorageKey('@services', () => { });
@@ -56,5 +66,5 @@ async function deleteStorageKey(keyIdentifier) {
 }
 
 export {
-  addService, fetchServices, fetchService, exportStorageData, deleteStorageKey, initializeStorageKey,
+  addService, fetchServices, fetchService, exportStorageData, importStorageData, deleteStorageKey, initializeStorageKey,
 };
