@@ -32,6 +32,13 @@ function fetchServices (resolve) {
     })
 };
 
+function fetchService (serviceUUID, resolve) {
+  AsyncStorage.getItem('@services', (error, servicesList) => {
+    servicesList = JSON.parse(servicesList); //FETCH ACK was used to log used
+    resolve (servicesList[serviceUUID]);
+  });
+}
+
 // deleteStorageKey IS ONLY FOR DEBUGGING PURPOSES
 async function deleteStorageKey(keyIdentifier) {
   await AsyncStorage.removeItem(keyIdentifier, (error) => {
@@ -40,5 +47,5 @@ async function deleteStorageKey(keyIdentifier) {
 }
 
 export {
-  addService, fetchServices, deleteStorageKey, initializeStorageKey,
+  addService, fetchServices, fetchService, deleteStorageKey, initializeStorageKey,
 };
