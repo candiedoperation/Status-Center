@@ -83,7 +83,14 @@ function setStatusCenterURL(statusCenterURL, resolve, reject) {
 }
 
 function getStatusCenterURL(resolve, reject) {
-  AsyncStorage.getItem('@url', (reject, resolve));
+  AsyncStorage.getItem('@url', (error, statusCenterURL) => {
+    if (!error) {
+      resolve(statusCenterURL);
+    } else {
+      console.error(error);
+      reject(error);
+    }
+  });
 }
 
 // deleteStorageKey IS ONLY FOR DEBUGGING PURPOSES

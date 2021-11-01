@@ -6,8 +6,9 @@ import * as RNFS from 'react-native-fs';
 import * as mime from 'react-native-mime-types';
 import { monitoringTheme } from '../themes/blueberry';
 import { Platform } from 'react-native';
-import { exportStorageData, importStorageData, deleteStorageKey } from '../controllers/StorageController';
+import { exportStorageData, importStorageData, deleteStorageKey, getStatusCenterURL, setStatusCenterURL } from '../controllers/StorageController';
 import { pick as configPicker, isCancel as isPickCancelled } from 'react-native-document-picker';
+import { useEffect } from 'react/cjs/react.development';
 
 const modalStyle = {
     backgroundColor: 'white',
@@ -20,6 +21,7 @@ const SettingsDialog = forwardRef((props, ref) => {
     const [snackBarVisible, setSnackBarVisible] = React.useState(false);
     const [snackBarText, setSnackBarText] = React.useState('');
     const [serverRootText, setServerRootText] = React.useState('');
+    const [statusSubmitDisabled, setStatusSubmitDisabled] = React.useState(false);
 
     useImperativeHandle(ref, () => ({
         requestModalVisibility(modalState) {
@@ -120,6 +122,37 @@ const SettingsDialog = forwardRef((props, ref) => {
             })
     }
 
+    function updateStatusCenterURL () {
+        setStatusSubmitDisabled(true);
+        setStatusCenterURL (serverRootText, 
+            (response) => {
+                setSnackBarText('Updated Status Center Server URL');
+                setSnackBarVisible(true);
+                setStatusSubmitDisabled(false);
+                setVisible(false);
+            }, 
+            (error) => {
+                console.error(error);
+                setSnackBarText('Failed to Update Status Center Server URL');
+                setSnackBarVisible(true);
+                setStatusSubmitDisabled(false);
+                setVisible(false);
+            }
+        );
+    }
+
+    useEffect(() => {
+        getStatusCenterURL(
+            (statusCenterURL) => {
+                console.log(statusCenterURL);
+                setServerRootText(statusCenterURL);
+            }, 
+            (error) => {
+                console.error(error);
+            }
+        );
+    }, [visible]);
+
     return (
         <Provider theme={monitoringTheme}>
             <Portal>
@@ -139,8 +172,8 @@ const SettingsDialog = forwardRef((props, ref) => {
                             </Flex>
                             <Flex marginTop={3} marginBottom={5}>
                                 <Subheading>Status Center Server</Subheading>
-                                <TextInput mode="outlined" label="Server Root URL"></TextInput>
-                                <Button marginTop={5} mode="contained">Update Server Root URL</Button>
+                                <TextInput value={serverRootText} onChangeText={(updateText) => { setServerRootText(updateText) }} mode="outlined" label="Server Root URL"></TextInput>
+                                <Button marginTop={5} mode="contained" disabled={statusSubmitDisabled} onPress={updateStatusCenterURL}>Update Server Root URL</Button>
                             </Flex>
                         </ScrollView>
                     </Dialog.Content>
