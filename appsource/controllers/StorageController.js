@@ -7,33 +7,30 @@ const initializeStorageKey = (keyIdentifier, callback) => {
 };
 
 function addService(systemName, systemDesc, systemTelnet, callback) {
-  AsyncStorage.getItem('services', (error, response) => {
+  AsyncStorage.getItem('@services', (error, response) => {
     if (response == null) {
-      initializeStorageKey('services', () => { addService(systemName, systemDesc, systemTelnet); });
+      initializeStorageKey('@services', () => { addService(systemName, systemDesc, systemTelnet); });
     } else {
-      AsyncStorage.getItem('services', (error, existingServices) => {
+      AsyncStorage.getItem('@services', (error, existingServices) => {
         existingServices = JSON.parse(existingServices);
         existingServices[uuid.v4()] = { systemName, systemDesc, systemTelnet };
-        AsyncStorage.setItem('services', JSON.stringify(existingServices), callback);
+        AsyncStorage.setItem('@services', JSON.stringify(existingServices), callback);
       });
     }
   });
 }
 
-const fetchServices = new Promise((resolve, reject) => {
-  AsyncStorage.getItem('services')
-    .then((servicesList) => {
+function fetchServices (resolve) {
+  AsyncStorage.getItem('@services', (error, servicesList) => {
       if (servicesList == null) {
-        initializeStorageKey('services', () => { });
+        initializeStorageKey('@services', () => { });
         resolve({});
       } else {
         console.log(JSON.parse(servicesList));
         resolve(JSON.parse(servicesList));
       }
-    }).catch((error) => {
-      reject(error);
-    });
-});
+    })
+};
 
 // deleteStorageKey IS ONLY FOR DEBUGGING PURPOSES
 async function deleteStorageKey(keyIdentifier) {

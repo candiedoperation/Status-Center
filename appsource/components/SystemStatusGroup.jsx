@@ -15,7 +15,7 @@ const SystemStatusGroup = forwardRef((props, ref) => {
     useImperativeHandle(ref, () => ({
         requestDataRefresh() {
             console.log("Re-Rendering Elements");
-            requestReRender(renderUUID + 1);
+            requestReRender(getRandomId());
         },
     }));
 
@@ -23,12 +23,12 @@ const SystemStatusGroup = forwardRef((props, ref) => {
     //addService ("Home Zone DNS", "internet.dns.ramalingam.org", () => {});
 
     useEffect(() => {
-        fetchServices.then((servicesList) => {
-            let updatedState = [];
+        fetchServices ((servicesList) => {
+            const updatedState = [];
 
             for (const [uuid, data] of Object.entries(servicesList)) {
-                //console.log(`${uuid}: ${JSON.stringify(data)}`);
-                updatedState.push(<SystemAccordition key={uuid} systemID={uuid} systemName={data.systemName + new Date().getTime().toString()} systemDesc={data.systemDesc} systemTelnet={data.systemTelnet} statusColor={statusColors.indeterminate}></SystemAccordition>);
+                console.log(`${uuid}: ${JSON.stringify(data)}`);
+                updatedState.push(<SystemAccordition key={uuid} systemID={uuid} systemName={data.systemName} systemDesc={data.systemDesc} systemTelnet={data.systemTelnet} statusColor={statusColors.indeterminate}></SystemAccordition>);
             }
             
             setDBServicesList(updatedState);
