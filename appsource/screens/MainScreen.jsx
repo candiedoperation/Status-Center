@@ -23,7 +23,7 @@ const MainScreen = forwardRef((props, ref) => {
       <ScrollView height="full">
       <SystemStatusGroup ref={SystemStatusGroupReference} />
       </ScrollView>
-      <AddMonitoredService ref={AddServiceModalReference} refreshCall={() => { window.location.reload() }} />
+      <AddMonitoredService ref={AddServiceModalReference} refreshCall={() => { SystemStatusGroupReference.current.requestDataRefresh() }} />
     </Provider>
   );
 });

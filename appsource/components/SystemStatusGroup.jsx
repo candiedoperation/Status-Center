@@ -9,28 +9,13 @@ import { addService } from '../controllers/StorageController';
 const getRandomId = () => parseInt(Math.random() * 100, 10);
 
 const SystemStatusGroup = forwardRef((props, ref) => {
-    const [renderUUID, requestReRender] = useState('');
+    const [renderUUID, requestReRender] = useState(0);
     const [dbServicesList, setDBServicesList] = useState([]);
-
-    function utilizeServiceFetchAPI () {
-        dbServicesList.length = 0;
-        setDBServicesList(dbServicesList);
-
-        fetchServices.then((servicesList) => {
-            for (const [uuid, data] of Object.entries(servicesList)) {
-                //console.log(`${uuid}: ${JSON.stringify(data)}`);
-                dbServicesList.push(<SystemAccordition systemID={uuid} systemName={data.systemName} systemDesc={data.systemDesc} systemTelnet={data.systemTelnet} statusColor={statusColors.indeterminate}></SystemAccordition>);
-            }
-
-            setDBServicesList(dbServicesList);
-            requestReRender("forceRender");
-        });
-    }
 
     useImperativeHandle(ref, () => ({
         requestDataRefresh() {
             console.log("Re-Rendering Elements");
-            utilizeServiceFetchAPI ();
+            requestReRender(renderUUID + 1);
         },
     }));
 
@@ -38,12 +23,21 @@ const SystemStatusGroup = forwardRef((props, ref) => {
     //addService ("Home Zone DNS", "internet.dns.ramalingam.org", () => {});
 
     useEffect(() => {
-        utilizeServiceFetchAPI();
-    })
+        fetchServices.then((servicesList) => {
+            let updatedState = [];
+
+            for (const [uuid, data] of Object.entries(servicesList)) {
+                //console.log(`${uuid}: ${JSON.stringify(data)}`);
+                updatedState.push(<SystemAccordition key={uuid} systemID={uuid} systemName={data.systemName + new Date().getTime().toString()} systemDesc={data.systemDesc} systemTelnet={data.systemTelnet} statusColor={statusColors.indeterminate}></SystemAccordition>);
+            }
+            
+            setDBServicesList(updatedState);
+        });        
+    }, [renderUUID])
 
     return (
         <Provider theme={monitoringTheme}>
-            <List.AccordionGroup minHeight="full">{dbServicesList}</List.AccordionGroup>
+            <List.AccordionGroup renderKey={renderUUID} minHeight="full">{dbServicesList}</List.AccordionGroup>
         </Provider>
     );
 });
