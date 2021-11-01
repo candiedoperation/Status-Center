@@ -34,7 +34,7 @@ function importStorageData(storageData, reject, resolve) {
       resolve();
     } else {
       console.log(error);
-      reject (error);
+      reject(error);
     }
   })
 }
@@ -49,7 +49,7 @@ function fetchServices(resolve) {
       resolve(JSON.parse(servicesList));
     }
   })
-};
+}
 
 function fetchService(serviceUUID, resolve) {
   AsyncStorage.getItem('@services', (error, servicesList) => {
@@ -58,13 +58,54 @@ function fetchService(serviceUUID, resolve) {
   });
 }
 
+function deleteService(serviceUUID, resolve) {
+  AsyncStorage.getItem('@services', (error, servicesList) => {
+    servicesList = JSON.parse(servicesList);
+    servicesList = delete servicesList[serviceUUID];
+    servicesList = JSON.stringify(servicesList);
+
+    AsyncStorage.setItem('@services', servicesList, (error) => {
+      if (!error) {
+        resolve();
+      }
+    })
+  });
+}
+
+function setStatusCenterURL(statusCenterURL, resolve, reject) {
+  AsyncStorage.setItem('@url', statusCenterURL, (error) => {
+    if (!error) {
+      resolve();
+    } else {
+      reject(error);
+    }
+  });
+}
+
+function getStatusCenterURL(resolve, reject) {
+  AsyncStorage.getItem('@url', (reject, resolve));
+}
+
 // deleteStorageKey IS ONLY FOR DEBUGGING PURPOSES
-async function deleteStorageKey(keyIdentifier) {
-  await AsyncStorage.removeItem(keyIdentifier, (error) => {
-    console.log(error);
+function deleteStorageKey(keyIdentifier, resolve, reject) {
+  AsyncStorage.removeItem(keyIdentifier, (error) => {
+    if (!error && resolve) {
+      resolve();
+    } else {
+      reject(error);
+    }
   });
 }
 
 export {
-  addService, fetchServices, fetchService, exportStorageData, importStorageData, deleteStorageKey, initializeStorageKey,
+  addService,
+  fetchServices,
+  fetchService,
+  exportStorageData,
+  importStorageData,
+  deleteStorageKey,
+  deleteService,
+  setStatusCenterURL,
+  getStatusCenterURL,
+  initializeStorageKey,
 };

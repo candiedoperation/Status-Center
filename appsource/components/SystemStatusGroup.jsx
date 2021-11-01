@@ -12,23 +12,28 @@ const SystemStatusGroup = forwardRef((props, ref) => {
 
     useImperativeHandle(ref, () => ({
         requestDataRefresh() {
-            console.log("Re-Rendering Elements");
             requestReRender(getRandomId());
         },
     }));
 
     useEffect(() => {
         fetchServices((servicesList) => {
+            console.log("Re-Rendering Elements");
             const updatedState = [];
+
             for (const [uuid, data] of Object.entries(servicesList)) {
                 console.log(`${uuid}: ${JSON.stringify(data)}`);
-                updatedState.push(<SystemAccordition key={uuid} systemID={uuid} systemName={data.systemName} systemDesc={data.systemDesc} systemTelnet={data.systemTelnet}></SystemAccordition>);
+                updatedState.push(<SystemAccordition renderRequest={childReRenderRequest} key={uuid} systemID={uuid} systemName={data.systemName} systemDesc={data.systemDesc} systemTelnet={data.systemTelnet}></SystemAccordition>);
             }
 
             setDBServicesList(updatedState);
             props.showsnackbar("Service Status Updated");
         });
-    }, [renderUUID])
+    }, [renderUUID]);
+
+    function childReRenderRequest () {
+        requestReRender(getRandomId());
+    }
 
     return (
         <Provider theme={monitoringTheme}>

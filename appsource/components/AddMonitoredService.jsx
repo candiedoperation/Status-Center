@@ -31,6 +31,7 @@ const AddMonitoredService = forwardRef((props, ref) => {
   }));
 
   function CompleteServiceAddition() {
+    setSubmissionAllowed(false);
     addService(serviceName, serviceDesc, serviceTelnet, () => {
       setSnackBarText("Service Added Successfully");
       setSnackBarVisible(true);

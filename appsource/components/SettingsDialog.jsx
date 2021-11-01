@@ -1,12 +1,12 @@
 import React, { useImperativeHandle, forwardRef, useState } from 'react';
 import { PermissionsAndroid } from 'react-native';
-import { Snackbar, Dialog, Portal, Button, Provider, TextInput } from 'react-native-paper';
+import { Snackbar, Dialog, Portal, Button, Provider, TextInput, Subheading } from 'react-native-paper';
 import { Flex, ScrollView } from 'native-base';
 import * as RNFS from 'react-native-fs';
 import * as mime from 'react-native-mime-types';
 import { monitoringTheme } from '../themes/blueberry';
 import { Platform } from 'react-native';
-import { exportStorageData, importStorageData } from '../controllers/StorageController';
+import { exportStorageData, importStorageData, deleteStorageKey } from '../controllers/StorageController';
 import { pick as configPicker, isCancel as isPickCancelled } from 'react-native-document-picker';
 
 const modalStyle = {
@@ -19,6 +19,7 @@ const SettingsDialog = forwardRef((props, ref) => {
     const [visible, setVisible] = React.useState(false);
     const [snackBarVisible, setSnackBarVisible] = React.useState(false);
     const [snackBarText, setSnackBarText] = React.useState('');
+    const [serverRootText, setServerRootText] = React.useState('');
 
     useImperativeHandle(ref, () => ({
         requestModalVisibility(modalState) {
@@ -74,21 +75,22 @@ const SettingsDialog = forwardRef((props, ref) => {
                     console.log(pickedConfiguration[0].uri);
                     RNFS.readFile(pickedConfiguration[0].uri, "utf8")
                         .then((storageDB) => {
-                            importStorageData(JSON.parse(storageDB), 
+                            importStorageData(JSON.parse(storageDB),
                                 (error) => {
                                     setSnackBarText('Failed to Import Configuration File');
-                                    setSnackBarVisible(true);     
-                                }, 
-                                
+                                    setSnackBarVisible(true);
+                                },
+
                                 (response) => {
                                     props.refreshCall();
+                                    setVisible(false);
                                     setSnackBarText('Successfully Imported Configuration File');
-                                    setSnackBarVisible(true);     
+                                    setSnackBarVisible(true);
                                 });
                         })
                         .catch((error) => {
                             setSnackBarText('Failed to Read Configuration File');
-                            setSnackBarVisible(true);                            
+                            setSnackBarVisible(true);
                         });
                 }).catch((error) => {
                     if (isPickCancelled(error)) {
@@ -104,6 +106,20 @@ const SettingsDialog = forwardRef((props, ref) => {
         }
     }
 
+    function handleDeleteSystems() {
+        deleteStorageKey('@services',
+            () => {
+                props.refreshCall();
+                setVisible(false);
+                setSnackBarText('Deleted All Services Successfully');
+                setSnackBarVisible(true);
+            },
+            (error) => {
+                setSnackBarText('Failed to Delete Services');
+                setSnackBarVisible(true);
+            })
+    }
+
     return (
         <Provider theme={monitoringTheme}>
             <Portal>
@@ -113,12 +129,20 @@ const SettingsDialog = forwardRef((props, ref) => {
                     contentContainerStyle={modalStyle}
                 >
                     <Dialog.Title>Settings</Dialog.Title>
-                    <Dialog.Content style={{ maxHeight: '75%' }}>
-                        <Flex>
-                            <Button margin={3} mode="outlined" onPress={handleConfigImport}>Import System List</Button>
-                            <Button disabled={Platform.OS == "android" ? false : true} margin={3} mode="outlined" onPress={handleConfigExport}>{Platform.OS == "android" ? "Export System List" : "Export (Android Only)"}</Button>
-                            <Button margin={3} mode="contained" color="#c6262e">Delete All Systems</Button>
-                        </Flex>
+                    <Dialog.Content style={{ maxHeight: '80%' }}>
+                        <ScrollView>
+                            <Flex>
+                                <Subheading>Backup Settings</Subheading>
+                                <Button margin={3} mode="outlined" onPress={handleConfigImport}>Import Services List</Button>
+                                <Button disabled={Platform.OS == "android" ? false : true} margin={3} mode="outlined" onPress={handleConfigExport}>{Platform.OS == "android" ? "Export Services List" : "Export (Android Only)"}</Button>
+                                <Button margin={3} mode="contained" color="#c6262e" onPress={handleDeleteSystems}>Delete All Services</Button>
+                            </Flex>
+                            <Flex marginTop={3} marginBottom={5}>
+                                <Subheading>Status Center Server</Subheading>
+                                <TextInput mode="outlined" label="Server Root URL"></TextInput>
+                                <Button marginTop={5} mode="contained">Update Server Root URL</Button>
+                            </Flex>
+                        </ScrollView>
                     </Dialog.Content>
                 </Dialog>
             </Portal>
