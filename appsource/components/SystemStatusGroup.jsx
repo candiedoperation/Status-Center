@@ -23,7 +23,17 @@ const SystemStatusGroup = forwardRef((props, ref) => {
 
             for (const [uuid, data] of Object.entries(servicesList)) {
                 console.log(`${uuid}: ${JSON.stringify(data)}`);
-                updatedState.push(<SystemAccordition renderRequest={childReRenderRequest} key={uuid} systemID={uuid} systemName={data.systemName} systemDesc={data.systemDesc} systemTelnet={data.systemTelnet}></SystemAccordition>);
+                updatedState.push(
+                    <SystemAccordition
+                        sendReport={props.sendReport}
+                        renderRequest={childReRenderRequest} 
+                        key={uuid} 
+                        systemID={uuid} 
+                        systemName={data.systemName} 
+                        systemDesc={data.systemDesc} 
+                        systemTelnet={data.systemTelnet}>
+                    </SystemAccordition>
+                );
             }
 
             setDBServicesList(updatedState);

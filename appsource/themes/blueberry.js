@@ -34,6 +34,19 @@ const actionTextStyles = {
     color: '#cc3b02',
     fontWeight: 'bold',
   },
+  warningListStrikeAction: {
+    color: '#cc3b02',
+    fontWeight: 'bold',
+    textDecorationLine: 'line-through', 
+    textDecorationStyle: 'solid'
+  },
+  normalTextStrikeAction: {
+    textDecorationLine: 'line-through', 
+    textDecorationStyle: 'solid'    
+  },
+  normalTextAction: {
+
+  }
 };
 
 export {

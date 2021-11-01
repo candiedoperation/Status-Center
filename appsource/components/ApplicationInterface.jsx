@@ -6,6 +6,7 @@ import AppBar from "./AppBar";
 import MainScreen from '../screens/MainScreen';
 import LicenseScreen from '../screens/LicenseScreen';
 import { navigationTheme } from '../themes/blueberry';
+import OpenSourceScreen from '../screens/OpenSourceScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -31,7 +32,7 @@ const ApplicationInterface = (props) => {
             }}>
                 <Drawer.Screen name="System Status" children={(props) => <MainScreen {...props} ref={MainScreenReference} />} />
                 <Drawer.Screen name="About Application" children={LicenseScreen} />
-                <Drawer.Screen name="Open Source Licenses" children={LicenseScreen} />
+                <Drawer.Screen name="Open Source Licenses" children={OpenSourceScreen} />
             </Drawer.Navigator>
         </NavigationContainer>
     );
