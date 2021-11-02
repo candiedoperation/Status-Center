@@ -73,6 +73,7 @@ function deleteService(serviceUUID, resolve) {
 }
 
 function setStatusCenterURL(statusCenterURL, resolve, reject) {
+  if (statusCenterURL.endsWith("/") == true) { statusCenterURL = statusCenterURL.slice(0, -1) }
   AsyncStorage.setItem('@url', statusCenterURL, (error) => {
     if (!error) {
       resolve();

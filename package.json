@@ -16,15 +16,16 @@
     "@react-stately/tabs": "^3.0.1",
     "@react-stately/toggle": "^3.2.3",
     "@react-stately/utils": "^3.2.2",
+    "axios": "^0.24.0",
     "expo": "~43.0.0",
     "expo-splash-screen": "~0.13.3",
     "expo-status-bar": "~1.1.0",
     "expo-updates": "~0.10.5",
+    "is-port-reachable": "^4.0.0",
     "native-base": "^3.2.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-native": "0.64.2",
-    "react-native-axios": "^0.17.1",
     "react-native-device-info": "^8.4.3",
     "react-native-document-picker": "^7.1.1",
     "react-native-fs": "^2.18.0",
@@ -50,6 +51,10 @@
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.26.1",
     "eslint-plugin-react-hooks": "^4.2.0"
+  },
+  "react-native": {
+    "node:net": "react-native-tcp-socket",
+    "net": "react-native-tcp-socket"
   },
   "private": true
 }

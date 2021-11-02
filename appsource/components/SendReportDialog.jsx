@@ -17,6 +17,7 @@ const SendReportDialog = forwardRef((props, ref) => {
     const [serviceUUID, setServiceUUID] = React.useState('');
     const [serviceName, setServiceName] = React.useState('');
     const [sendReportDisabled, setSendReportDisabled] = React.useState(true);
+    const [sendReportLoading, setSendReportLoading] = React.useState(false);
     const [feedbackText, setFeedbackText] = React.useState("");
 
     useImperativeHandle(ref, () => ({
@@ -28,7 +29,32 @@ const SendReportDialog = forwardRef((props, ref) => {
     }));
 
     function handleReportSend() {
+        setSendReportDisabled(true);
+        setSendReportLoading(true);
 
+        forwardReportToBackend(
+            {
+                serviceName: serviceName,
+                serviceUUID: serviceUUID,
+                serviceMessage: feedbackText,
+            }, 
+            (response) => {
+                setVisible(false);
+                setFeedbackText("");
+                setSendReportDisabled(false);
+                setSendReportLoading(false);
+
+                setSnackBarText('Issue has been Reported');
+                setSnackBarVisible(true);
+            }, 
+            (error) => {
+                setSendReportDisabled(false);
+                setSendReportLoading(false);
+
+                setSnackBarText('Failed to Report Issue');
+                setSnackBarVisible(true);
+            }
+        );
     }
 
     function handleFeedbackButtonBehavior() {
@@ -59,7 +85,7 @@ const SendReportDialog = forwardRef((props, ref) => {
                     </Dialog.Content>
                     <Dialog.Actions>
                         <Button onPress={() => { setVisible(false); setFeedbackText("") }}>Cancel</Button>
-                        <Button disabled={sendReportDisabled} onPress={handleReportSend} mode="contained">Send Report</Button>
+                        <Button loading={sendReportLoading} disabled={sendReportDisabled} onPress={handleReportSend} mode="contained">Send Report</Button>
                     </Dialog.Actions>
                 </Dialog>
             </Portal>

@@ -27,7 +27,7 @@ const SystemStatusGroup = forwardRef((props, ref) => {
                     <SystemAccordition
                         sendReport={props.sendReport}
                         renderRequest={childReRenderRequest} 
-                        key={uuid} 
+                        key={uuid}
                         systemID={uuid} 
                         systemName={data.systemName} 
                         systemDesc={data.systemDesc} 
