@@ -27,7 +27,7 @@ const modalStyle = {
     margin: 15,
 };
 
-const SendReportDialog = forwardRef((props, ref) => {
+const SendReportDialog = React.forwardRef((props, ref) => {
     const [visible, setVisible] = React.useState(false);
     const [snackBarVisible, setSnackBarVisible] = React.useState(false);
     const [snackBarText, setSnackBarText] = React.useState('');
@@ -37,7 +37,7 @@ const SendReportDialog = forwardRef((props, ref) => {
     const [sendReportLoading, setSendReportLoading] = React.useState(false);
     const [feedbackText, setFeedbackText] = React.useState("");
 
-    useImperativeHandle(ref, () => ({
+    React.useImperativeHandle(ref, () => ({
         requestModalVisibility(modalState, serviceUUID, serviceName) {
             setServiceUUID(serviceUUID);
             setServiceName(serviceName);

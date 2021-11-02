@@ -34,14 +34,14 @@ const modalStyle = {
     margin: 15,
 };
 
-const SettingsDialog = forwardRef((props, ref) => {
+const SettingsDialog = React.forwardRef((props, ref) => {
     const [visible, setVisible] = React.useState(false);
     const [snackBarVisible, setSnackBarVisible] = React.useState(false);
     const [snackBarText, setSnackBarText] = React.useState('');
     const [serverRootText, setServerRootText] = React.useState('');
     const [statusSubmitDisabled, setStatusSubmitDisabled] = React.useState(false);
 
-    useImperativeHandle(ref, () => ({
+    React.useImperativeHandle(ref, () => ({
         requestModalVisibility(modalState) {
             setVisible(modalState);
         },
@@ -159,7 +159,7 @@ const SettingsDialog = forwardRef((props, ref) => {
         );
     }
 
-    useEffect(() => {
+    React.useEffect(() => {
         getStatusCenterURL(
             (statusCenterURL) => {
                 console.log(statusCenterURL);

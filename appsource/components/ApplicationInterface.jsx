@@ -29,7 +29,7 @@ import OpenSourceScreen from '../screens/OpenSourceScreen';
 const Drawer = createDrawerNavigator();
 
 const ApplicationInterface = (props) => {
-    const MainScreenReference = useRef();
+    const MainScreenReference = React.useRef();
 
     return (
         <NavigationContainer theme={navigationTheme}>

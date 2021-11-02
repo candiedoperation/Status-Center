@@ -23,11 +23,11 @@ import { actionTextStyles, statusColors } from '../themes/blueberry';
 import { forwardRestartToBackend } from '../controllers/NetworkController';
 import { CheckQueueCompletionStatus, TcpController } from '../controllers/TcpController';
 
-const SystemAccordition = forwardRef(({ sendReport, renderRequest, systemID, systemName, systemDesc }, ref) => {
-  const [remoteServerAvailable, setRemoteServerAvailable] = useState(false);
-  const [serviceAvailable, setServiceAvailable] = useState(statusColors.indeterminate);
+const SystemAccordition = React.forwardRef(({ sendReport, renderRequest, systemID, systemName, systemDesc }, ref) => {
+  const [remoteServerAvailable, setRemoteServerAvailable] = React.useState(false);
+  const [serviceAvailable, setServiceAvailable] = React.useState(statusColors.indeterminate);
 
-  useImperativeHandle(ref, () => ({
+  React.useImperativeHandle(ref, () => ({
     setServiceAvailable(isAvailable) {
       setServiceAvailablility(isAvailable);
     }

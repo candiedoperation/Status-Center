@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
 });
 
 function AppBar(props) {
-  const [refreshAllowed, setRefreshAllowed] = useState(true);
+  const [refreshAllowed, setRefreshAllowed] = React.useState(true);
 
   function handleRefreshRequest() {
     props.onUserRefreshRequest();

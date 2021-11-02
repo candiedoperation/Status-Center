@@ -24,18 +24,18 @@ import SystemAccordition from './SystemAccordition';
 import { fetchServices } from '../controllers/StorageController';
 import { RequestConnectionAddition, ReRenderRequestHandler, StartConnectionQueue, StopConnectionQueue } from '../controllers/TcpController';
 
-const SystemStatusGroup = forwardRef((props, ref) => {
+const SystemStatusGroup = React.forwardRef((props, ref) => {
     const [renderUUID, requestReRender] = useState(0);
     const [dbServicesList, setDBServicesList] = useState([]);
     const getRandomId = () => parseInt(Math.random() * 100, 10);
 
-    useImperativeHandle(ref, () => ({
+    React.useImperativeHandle(ref, () => ({
         requestDataRefresh() {
             requestReRender(getRandomId());
         },
     }));
 
-    useEffect(() => {
+    React.useEffect(() => {
         fetchServices((servicesList) => {
             console.log("Re-Rendering Elements");
             ReRenderRequestHandler();

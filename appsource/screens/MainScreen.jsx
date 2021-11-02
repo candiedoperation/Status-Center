@@ -26,14 +26,14 @@ import SettingsDialog from '../components/SettingsDialog';
 import SendReportDialog from '../components/SendReportDialog';
 
 const MainScreen = forwardRef((props, ref) => {
-  const AddServiceModalReference = useRef();
-  const SystemStatusGroupReference = useRef();
-  const SettingsModalReference = useRef();
-  const SendReportDialogReference = useRef();
+  const AddServiceModalReference = React.useRef();
+  const SystemStatusGroupReference = React.useRef();
+  const SettingsModalReference = React.useRef();
+  const SendReportDialogReference = React.useRef();
   const [snackBarVisible, setSnackBarVisible] = React.useState(false);
   const [snackBarText, setSnackBarText] = React.useState('');
 
-  useImperativeHandle(ref, () => ({
+  React.useImperativeHandle(ref, () => ({
     requestShowAddServiceDialog(modalState) {
       AddServiceModalReference.current.requestModalVisibility(modalState);
     },

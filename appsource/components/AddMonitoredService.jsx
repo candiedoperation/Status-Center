@@ -32,17 +32,17 @@ const modalStyle = {
   margin: 15,
 };
 
-const AddMonitoredService = forwardRef((props, ref) => {
+const AddMonitoredService = React.forwardRef((props, ref) => {
   const [visible, setVisible] = React.useState(false);
   const [snackBarVisible, setSnackBarVisible] = React.useState(false);
   const [snackBarText, setSnackBarText] = React.useState('');
-  const [lastAddedUUID, setLastAddedUUID] = useState('');
-  const [serviceName, setServiceName] = useState('');
-  const [serviceDesc, setServiceDesc] = useState('');
-  const [serviceTelnet, setServiceTelnet] = useState('');
-  const [submissionAllowed, setSubmissionAllowed] = useState(false);
+  const [lastAddedUUID, setLastAddedUUID] = React.useState('');
+  const [serviceName, setServiceName] = React.useState('');
+  const [serviceDesc, setServiceDesc] = React.useState('');
+  const [serviceTelnet, setServiceTelnet] = React.useState('');
+  const [submissionAllowed, setSubmissionAllowed] = React.useState(false);
 
-  useImperativeHandle(ref, () => ({
+  React.useImperativeHandle(ref, () => ({
     requestModalVisibility(modalState) {
       setVisible(modalState);
     },
