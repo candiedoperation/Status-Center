@@ -1,4 +1,4 @@
-tk.cyberphase.statuscenter
+package tk.cyberphase.statuscenter;
 
 import android.os.Bundle;
 
