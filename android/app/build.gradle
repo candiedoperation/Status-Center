@@ -130,7 +130,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.statuscenter"
+        applicationId "tk.cyberphase.statuscenter"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

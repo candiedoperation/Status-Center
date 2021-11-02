@@ -1,4 +1,4 @@
-package com.statuscenter;
+package tk.cyberphase.statuscenter;
 
 import android.app.Application;
 import android.content.Context;
