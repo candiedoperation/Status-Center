@@ -33,8 +33,8 @@ const LicenseScreen = (props) => {
                     </ScrollView>
                 </Card.Content>
                 <Card.Actions style={{ flexDirection: "row-reverse" }}>
-                    <Button mode="contained" style={{marginRight: 10, marginLeft: 10 }} onPress={() => {}}>Donate</Button>
-                    <Button mode="outlined" onPress={() => { }}>View Source</Button>
+                    <Button mode="contained" style={{marginRight: 10, marginLeft: 10 }} onPress={() => { Linking.openURL("https://candiedoperation.github.io/status-center/donate.html"); }}>Donate</Button>
+                    <Button mode="outlined" onPress={() => { Linking.openURL("https://github.com/candiedoperation/Status-Center"); }}>View Source</Button>
                 </Card.Actions>
             </Card>
         </Flex>
