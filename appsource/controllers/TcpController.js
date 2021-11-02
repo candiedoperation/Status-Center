@@ -2,7 +2,8 @@ import TcpSocket from 'react-native-tcp-socket';
 
 //Controlling Connections Syncrosously due to Limitations of TcpSocket
 var connectionQueue = [];
-var completedConnections = [];
+var availableConnections = [];
+var rejectedConnections = [];
 var currentConnectionIndex = 0;
 
 function TcpController(serviceTelnet) {
@@ -29,26 +30,35 @@ function RequestConnectionAddition(connectionData) {
     connectionQueue.push(connectionData);
 }
 
+function ReRenderRequestHandler() {
+    StopConnectionQueue();
+    availableConnections.length = 0;
+    rejectedConnections.length = 0;    
+}
+
 function CheckQueueCompletionStatus(systemUUID) {
     return new Promise((resolve, reject) => {
-        if (completedConnections.includes(systemUUID)) {
-            resolve ();
+        if (availableConnections.includes(systemUUID)) {
+            resolve(0); //0 for success
+        } else if (rejectedConnections.includes(systemUUID)) {
+            resolve(1); //1 for Rejection
         } else {
-            reject ();
+            reject(-1); //-1 for indeterminate
         }
     });
 }
 
 function StartConnectionQueue(callback) {
+    console.log("Queue Requested");
     if (typeof connectionQueue[currentConnectionIndex] === 'undefined') {
         console.log("Queue Complete");
+
         currentConnectionIndex = 0;
         connectionQueue.length = 0;
-        completedConnections.length = 0;
     } else {
         TcpController(connectionQueue[currentConnectionIndex].systemTelnet)
             .then((response) => {
-                completedConnections.push(
+                availableConnections.push(
                     connectionQueue[currentConnectionIndex].systemUUID
                 );
 
@@ -58,10 +68,14 @@ function StartConnectionQueue(callback) {
                 );
             })
             .catch((error) => {
+                rejectedConnections.push(
+                    connectionQueue[currentConnectionIndex].systemUUID
+                );
+
                 callback(
                     connectionQueue[currentConnectionIndex].systemUUID,
                     1 //Signal 1 for error
-                )
+                );
             }).finally(() => {
                 currentConnectionIndex++;
                 StartConnectionQueue(callback);
@@ -71,13 +85,13 @@ function StartConnectionQueue(callback) {
 
 function StopConnectionQueue() {
     //Make sure the Index is 1 higher than total indices so that StartConnectionQueue ends loop.
-    currentConnectionIndex = connectionQueue.length();
+    currentConnectionIndex = connectionQueue.length;
 }
 
 export {
-    TcpController,
     CheckQueueCompletionStatus,
     RequestConnectionAddition,
     StartConnectionQueue,
-    StopConnectionQueue
+    StopConnectionQueue,
+    ReRenderRequestHandler
 }
